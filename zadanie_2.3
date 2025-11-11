@@ -1,0 +1,63 @@
+/*Задача 3.
+Преподавателю по программированию стало нечем занять своих студентов,
+поэтому он придумал, что хочет получить обработчик текстовых файлов,
+который работает по следующему алгоритму: программа считывает из 
+текстового файла input.txt строку, состоящую не более, чем из 255 символов.
+
+Программа записывает в выходной файл output.txt указанную последовательность символов,
+кроме случаев, если в данной строке встречаются числа (последовательность цифр = 1 число).
+Тогда программа преобразует эти числа в двоичную систему счисления.
+
+Примечания: Единственная строка, состоящая из любых символов.
+Длина строки не превышает 255 символов. Гарантируется,
+что во всех числах нет ведущих нулей. Выведите преобразованную строку.*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cctype> 
+
+// вспомогательная функция: перевод числа в двоичную систему
+std::string toBinary(int num) {
+    std::string bin;
+    while (num > 0) {
+        bin = char('0' + num % 2) + bin;
+        num /= 2;
+    }
+    return bin.empty() ? "0" : bin;
+}
+
+int main() {
+    std::ifstream fin("input.txt");
+    std::ofstream fout("output.txt");
+
+    std::string text;
+    std::getline(fin, text);
+
+    std::string result;
+    std::string number;
+
+    for (char ch : text) {
+        if (std::isdigit(static_cast<unsigned char>(ch))) {
+            number += ch; // собираем цифры в строку
+        }
+        else {
+            if (!number.empty()) {
+                // преобразуем накопленное число в двоичное
+                int value = std::stoi(number);
+                result += toBinary(value);
+                number.clear();
+            }
+            result += ch; // добавляем символ, если не цифра
+        }
+    }
+
+    // если строка заканчивается числом — не забудем обработать его
+    if (!number.empty()) {
+        int value = std::stoi(number);
+        result += toBinary(value);
+    }
+
+    fout << result;
+    return 0;
+}
