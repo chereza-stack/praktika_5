@@ -17,23 +17,33 @@
 #include <cctype> // для tolower
 
 int main() {
-    std::ifstream fin("input.txt");   //  открываем входной файл
-    std::ofstream fout("output.txt"); //  открываем выходной файл
+    setlocale(LC_ALL, "Russian");
+    std::ifstream fin("input.txt");
+    if (!fin.is_open()) { //  проверяем, открылся ли файл
+        std::cerr << "Ошибка: не удалось открыть файл input.txt" << std::endl;
+        return 1; // завершаем программу с кодом ошибки
+    }
+
+    std::ofstream fout("output.txt");
+    if (!fout.is_open()) { //  проверка на выходной файл
+        std::cerr << "Ошибка: не удалось создать файл output.txt" << std::endl;
+        return 1;
+    }
 
     std::string text;
-    std::getline(fin, text); //  считываем строку (или весь текст)
+    std::getline(fin, text);
 
     std::string forbidden = "useragreement";
     std::string result;
 
-    //  фильтрация символов
     for (char ch : text) {
         char lower = std::tolower(static_cast<unsigned char>(ch));
         if (forbidden.find(lower) == std::string::npos) {
-            result += ch; // добавляем, если символ не входит в forbidden
+            result += ch;
         }
     }
 
-    fout << result; //  записываем результат
+    fout << result;
+    std::cout << "Файл обработан успешно. Результат записан в output.txt\n";
     return 0;
 }
