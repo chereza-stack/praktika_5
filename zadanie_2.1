@@ -1,0 +1,39 @@
+/*Задача 1.
+Алексею надоело читать пользовательские соглашения, 
+поэтому он решил собрать все текстовые файлы с ними и попортить каждое из них следующим образом: 
+он берёт текстовый файл и удаляет из него буквы, которые содержаться во фразе "user agreement", 
+то есть буквы "u", "s", "e" и т.д. вне зависимости от их регистра.
+
+Необходимо помочь автоматизировать Лёше этот процесс. 
+На вход программа получает файл input.txt, в файл output.txt
+выводит текст из файла input.txt без соответствующих букв.
+Примечания: Программа получает на вход данные из файла input.txt 
+(не более 10000 символов на английском языке). 
+Программа выводит в файл output.txt последовательность символов без соответствующих букв.*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cctype> // для tolower
+
+int main() {
+    std::ifstream fin("input.txt");   //  открываем входной файл
+    std::ofstream fout("output.txt"); //  открываем выходной файл
+
+    std::string text;
+    std::getline(fin, text); //  считываем строку (или весь текст)
+
+    std::string forbidden = "useragreement";
+    std::string result;
+
+    //  фильтрация символов
+    for (char ch : text) {
+        char lower = std::tolower(static_cast<unsigned char>(ch));
+        if (forbidden.find(lower) == std::string::npos) {
+            result += ch; // добавляем, если символ не входит в forbidden
+        }
+    }
+
+    fout << result; //  записываем результат
+    return 0;
+}
