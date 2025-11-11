@@ -15,14 +15,23 @@
 #include <string>
 
 int main() {
+    setlocale(LC_ALL, "Russian");
     std::ifstream fin1("input1.txt");
+    if (!fin1.is_open()) {
+        std::cerr << "Ошибка: не удалось открыть файл input1.txt" << std::endl;
+        return 1;
+    }
+
     std::ifstream fin2("input2.txt");
+    if (!fin2.is_open()) {
+        std::cerr << "Ошибка: не удалось открыть файл input2.txt" << std::endl;
+        return 1;
+    }
 
     std::string X, Y;
     std::getline(fin1, X);
     std::getline(fin2, Y);
 
-    // проверяем, является ли Y подстрокой X
     if (X.find(Y) != std::string::npos)
         std::cout << "yes";
     else
