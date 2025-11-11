@@ -15,9 +15,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <cctype> 
+#include <cctype>
 
-// вспомогательная функция: перевод числа в двоичную систему
 std::string toBinary(int num) {
     std::string bin;
     while (num > 0) {
@@ -28,8 +27,18 @@ std::string toBinary(int num) {
 }
 
 int main() {
+    setlocale(LC_ALL, "Russian");
     std::ifstream fin("input.txt");
+    if (!fin.is_open()) { //  проверка на наличие файла
+        std::cerr << "Ошибка: не удалось открыть файл input.txt" << std::endl;
+        return 1;
+    }
+
     std::ofstream fout("output.txt");
+    if (!fout.is_open()) { //  проверка на выходной файл
+        std::cerr << "Ошибка: не удалось создать файл output.txt" << std::endl;
+        return 1;
+    }
 
     std::string text;
     std::getline(fin, text);
@@ -39,25 +48,23 @@ int main() {
 
     for (char ch : text) {
         if (std::isdigit(static_cast<unsigned char>(ch))) {
-            number += ch; // собираем цифры в строку
-        }
-        else {
+            number += ch;
+        } else {
             if (!number.empty()) {
-                // преобразуем накопленное число в двоичное
                 int value = std::stoi(number);
                 result += toBinary(value);
                 number.clear();
             }
-            result += ch; // добавляем символ, если не цифра
+            result += ch;
         }
     }
 
-    // если строка заканчивается числом — не забудем обработать его
     if (!number.empty()) {
         int value = std::stoi(number);
         result += toBinary(value);
     }
 
     fout << result;
+    std::cout << "Файл обработан успешно. Результат записан в output.txt\n";
     return 0;
 }
