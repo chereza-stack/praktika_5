@@ -1,1 +1,42 @@
+/*Задача 1. Среднее арифметическое массива (std::array)
+Тема: базовое использование std::array, итераторы, работа с фиксированными массивами.
 
+Задание: Создайте std::array<int, 10> и заполните его числами от 1 до 10. Рассчитайте среднее арифметическое элементов массива и выведите его с точностью до 2 знаков после запятой.
+
+Подсказка: Используйте диапазонный цикл for (auto x : arr) и std::accumulate из <numeric>.*/
+
+#include <array>
+#include <numeric>
+#include <iostream>
+#include <iomanip>
+#include <random>   
+
+int main() {
+    //  Создаём фиксированный массив из 10 элементов
+    std::array<int, 10> arr;
+
+    //  Настраиваем генератор случайных чисел
+    std::random_device rd;           // источник случайности
+    std::mt19937 gen(rd());          // генератор Mersenne Twister
+    std::uniform_int_distribution<int> dist(1, 10); // числа от 1 до 10
+
+    //  Заполняем массив случайными числами
+    for (auto& x : arr) {
+        x = dist(gen);
+    }
+
+    // Считаем сумму
+    int sum = std::accumulate(arr.begin(), arr.end(), 0);
+
+    //  Среднее арифметическое
+    double average = static_cast<double>(sum) / arr.size();
+
+    //  Выводим массив и среднее значение
+    std::cout << "Array: ";
+    for (auto x : arr) std::cout << x << " ";
+    std::cout << "\nArithmetic mean: "
+        << std::fixed << std::setprecision(2)
+        << average << std::endl;
+
+    return 0;
+}
