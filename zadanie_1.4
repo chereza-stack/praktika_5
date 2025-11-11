@@ -1,0 +1,26 @@
+/*Задача 4. Обратная вставка элементов (std::forward_list)
+Тема: односвязный список, работа с итераторами-вставками.
+
+Задание: Создайте std::forward_list<int> и вставьте в него числа 1, 2, 3, 4, 5 в обратном порядке, чтобы на выходе получился список [1, 2, 3, 4, 5].
+
+Подсказка: Используйте insert_after и before_begin().*/
+
+#include <forward_list>
+#include <iostream>
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    std::forward_list<int> fl;
+
+    // Вставляем в обратном порядке: 5,4,3,2,1
+    for (int v = 5; v >= 1; --v) {
+        fl.insert_after(fl.before_begin(), v);
+    }
+
+    // После таких вставок список станет: 1,2,3,4,5
+    std::cout << "Содержимое forward_list: ";
+    for (int x : fl) std::cout << x << " ";
+    std::cout << "\n";
+
+    return 0;
+}
