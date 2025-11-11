@@ -1,0 +1,45 @@
+/*Задача 2. Очередь заказов (std::deque)
+Тема: двухсторонняя очередь, добавление и удаление элементов с обеих сторон.
+
+Задание: Смоделируйте очередь заказов, где заказы поступают и выполняются не по строгому порядку:
+
+Добавляйте новые заказы в конец (push_back).
+Срочные заказы вставляйте в начало (push_front).
+Удаляйте выполненные заказы из начала очереди (pop_front).
+После обработки всех заказов выведите, какие заказы остались.
+
+Подсказка: Используйте std::deque<std::string> и методы push_front, push_back, pop_front.*/
+
+#include <deque>
+#include <iostream>
+#include <string>
+
+int main() {
+    std::deque<std::string> orders;
+
+    // Поступление заказов
+    orders.push_back("order_001"); // обычный
+    orders.push_back("order_002");
+    orders.push_front("urgent_101"); // срочный
+    orders.push_back("order_003");
+    orders.push_front("urgent_102");
+
+    // Обработка: выполняем два заказа (удаляем из начала)
+    if (!orders.empty()) orders.pop_front(); // выполняем urgent_102
+    if (!orders.empty()) orders.pop_front(); // выполняем urgent_101
+
+    // Добавим ещё один обычный и один срочный, чтобы показать динамику
+    orders.push_back("order_004");
+    orders.push_front("urgent_103");
+
+    // Обработаем ещё один заказ
+    if (!orders.empty()) orders.pop_front();
+
+    // Вывод оставшихся заказов
+    std::cout << "Remaining orders in the queue (" << orders.size() << "):\n";
+    for (const auto& o : orders) {
+        std::cout << o << "\n";
+    }
+
+    return 0;
+}
